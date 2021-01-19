@@ -331,7 +331,7 @@ class Pong(PyGameWrapper):
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
 
     def _reset_ball(self, direction):
-        print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
+        print("Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']))
         self.ball.pos.x = self.width / 2  # move it to the center
         # we go in the same direction that they lost in but at starting vel.
         self.ball_speed_ratio = self.ball_speed_ratio_start
