@@ -20,6 +20,7 @@ class Ball(pygame.sprite.Sprite):
         self.pos = vec2d(pos_init)
         self.pos_before = vec2d(pos_init)
         self.vel = vec2d((speed, -1.0 * speed))
+        self.numberContacts = 0
 
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
         self.SCREEN_WIDTH = SCREEN_WIDTH
@@ -33,8 +34,7 @@ class Ball(pygame.sprite.Sprite):
             (255, 255, 255),
             (radius, radius),
             radius,
-            0
-        )
+            0)
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -72,6 +72,11 @@ class Ball(pygame.sprite.Sprite):
                 self.vel.y += cpuPlayer.vel.y * 0.006
                 self.pos.x -= self.radius
                 is_pad_hit = True
+                if is_pad_hit:
+                    self.numberContacts += 1
+                if self.numberContacts > 2:
+                    self.speed += 0.5
+                    self.numberContacts = 0
 
         # Little randomness in order not to stuck in a static loop
         if is_pad_hit:
@@ -158,7 +163,6 @@ class Player(pygame.sprite.Sprite):
         self.pos.y += dy * dt
         self.rect.center = (self.pos.x, self.pos.y)
 
-
 class Pong(PyGameWrapper):
     """
     Loosely based on code from marti1125's `pong game`_
@@ -240,7 +244,6 @@ class Pong(PyGameWrapper):
 
                     if key == self.actions['down']:
                         self.dy = self.agentPlayer.speed
-
 
 
     def getGameState(self):
