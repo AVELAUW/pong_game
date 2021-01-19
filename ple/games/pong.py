@@ -17,7 +17,6 @@ class Ball(pygame.sprite.Sprite):
         self.rng = rng
         self.radius = radius
         self.speed = speed
-        print(self.speed)
         self.pos = vec2d(pos_init)
         self.pos_before = vec2d(pos_init)
         self.vel = vec2d((speed, -1.0 * speed))
@@ -51,7 +50,10 @@ class Ball(pygame.sprite.Sprite):
         t = (s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y)
 
         return (s >= 0 and s <= 1 and t >= 0 and t <= 1)
-
+    
+    def getSpeed(self):
+        return self.speed
+    
     def update(self, agentPlayer, cpuPlayer, dt):
         self.pos.x += self.vel.x * dt
         self.pos.y += self.vel.y * dt
