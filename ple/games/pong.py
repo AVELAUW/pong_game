@@ -318,7 +318,7 @@ class Pong(PyGameWrapper):
             (self.width - self.paddle_dist_to_wall, self.height / 2),
             self.width,
             self.height)
-
+        
         self.players_group = pygame.sprite.Group()
         self.players_group.add(self.agentPlayer)
         self.players_group.add(self.cpuPlayer)
@@ -381,12 +381,13 @@ class Pong(PyGameWrapper):
         else:
             self.agentPlayer.update(self.dy, dt)
             self.cpuPlayer.updateCpu(self.ball, dt)
-
+        
         font = pygame.font.Font(None, self.ball_radius*2)
         text = font.render(str(self.score_counts['agent']),1,(0,0,0))
-        screen.blit(text,((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)))
+        self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)) )
         text = font.render(str(self.score_counts['cpu']),1,(0,0,0))
-        screen.blit(text,((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2))
+        self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
+        
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
 
