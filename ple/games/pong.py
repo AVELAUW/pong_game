@@ -347,9 +347,12 @@ class Pong(PyGameWrapper):
         self.ball.speed = self.ball_speed_ratio * self.height
         self._handle_player_events()
 
-        # doesnt make sense to have this, but include if needed.
-        self.score_sum += self.rewards["tick"]
-        self.collisions += self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
+        # Ball & player collision events
+        self.score_sum += self.rewards["tick"] # not sure this makes any sense to have
+        contact = self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
+        self.collisions += contact
+        if contact == 1:
+            print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
         # Set how often the ball speeds up
         if self.collisions > 2:
             self.ball_speed_ratio += 0.05
@@ -389,7 +392,6 @@ class Pong(PyGameWrapper):
         #self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
-        print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
 
 if __name__ == "__main__":
     import numpy as np
