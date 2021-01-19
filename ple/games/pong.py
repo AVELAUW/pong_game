@@ -335,6 +335,7 @@ class Pong(PyGameWrapper):
                            self.ball.speed) - self.ball.speed * 0.5
 
     def step(self, dt):
+        print(self.ball.getSpeed())
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
         self.agentPlayer.speed = self.players_speed_ratio * self.height
