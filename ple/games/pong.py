@@ -74,8 +74,9 @@ class Ball(pygame.sprite.Sprite):
                 is_pad_hit = True
                 if is_pad_hit:
                     self.numberContacts += 1
-                if self.numberContacts > 2:
-                    self.speed += 0.5
+                # Determine how many contacts are needed to incrase ball speed
+                if self.numberContacts > 0:
+                    self.speed += 1.5
                     self.numberContacts = 0
 
         # Little randomness in order not to stuck in a static loop
