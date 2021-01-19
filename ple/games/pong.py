@@ -331,13 +331,13 @@ class Pong(PyGameWrapper):
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
 
     def _reset_ball(self, direction):
+        print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
         self.ball.pos.x = self.width / 2  # move it to the center
         # we go in the same direction that they lost in but at starting vel.
         self.ball_speed_ratio = self.ball_speed_ratio_start
         self.ball.speed = self.ball_speed_ratio * self.height
         self.ball.vel.x = self.ball.speed * direction
-        self.ball.vel.y = (self.rng.random_sample() *
-                           self.ball.speed) - self.ball.speed * 0.5
+        self.ball.vel.y = (self.rng.random_sample() * self.ball.speed) - self.ball.speed * 0.5
 
     def step(self, dt):
         dt /= 1000.0
@@ -349,10 +349,7 @@ class Pong(PyGameWrapper):
 
         # Ball & player collision events
         self.score_sum += self.rewards["tick"] # not sure this makes any sense to have
-        contact = self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
-        self.collisions += contact
-        if contact == 1:
-            print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
+        self.collisions += self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
         # Set how often the ball speeds up
         if self.collisions > 2:
             self.ball_speed_ratio += 0.05
