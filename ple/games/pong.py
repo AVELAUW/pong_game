@@ -211,7 +211,7 @@ class Pong(PyGameWrapper):
         self.MAX_SCORE = MAX_SCORE
 
         self.dy = 0.0
-        self.score_sum = 0.0  # need to deal with 11 on either side winning
+        self.score_sum = 0.0  # need to deal with 10 or MAX_SCORE on either side winning
         self.score_counts = {
             "agent": 0.0,
             "cpu": 0.0}
@@ -293,7 +293,7 @@ class Pong(PyGameWrapper):
             "cpu": 0.0}
 
         self.score_sum = 0.0
-        self.collisions = 1
+        self.collisions = 0
         self.ball = Ball(
             self.ball_radius,
             self.ball_speed_ratio * self.height,
@@ -350,7 +350,7 @@ class Pong(PyGameWrapper):
         self.score_sum += self.rewards["tick"]
         self.collisions += self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
         # Set how often the ball speeds up
-        if self.collisions > 0:
+        if self.collisions > 2:
             self.ball_speed_ratio += 0.05
             self.ball.speed = self.ball_speed_ratio * self.height
             self.collisions = 0
