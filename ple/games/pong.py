@@ -387,9 +387,9 @@ class Pong(PyGameWrapper):
         #self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)) )
         #text = font.render(str(self.score_counts['cpu']),1,(0,0,0))
         #self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
-        
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
+        print("Left player: " + str(self.score_counts['agent']) + "   Right player: " + str(self.score_counts['cpu']))
 
 if __name__ == "__main__":
     import numpy as np
