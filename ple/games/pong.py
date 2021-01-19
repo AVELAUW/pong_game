@@ -75,12 +75,6 @@ class Ball(pygame.sprite.Sprite):
                 self.vel.y += cpuPlayer.vel.y * 0.006
                 self.pos.x -= self.radius
                 is_pad_hit = True
-                if is_pad_hit:
-                    self.numberContacts += 1
-                # Determine how many contacts are needed to incrase ball speed
-                if self.numberContacts > 0:
-                    self.speed += 1.5
-                    self.numberContacts = 0
 
         # Little randomness in order not to stuck in a static loop
         if is_pad_hit:
@@ -96,8 +90,11 @@ class Ball(pygame.sprite.Sprite):
 
         self.pos_before.x = self.pos.x
         self.pos_before.y = self.pos.y
-
         self.rect.center = (self.pos.x, self.pos.y)
+        
+        if is_pad_hit:
+            return 1
+        return 0
 
 
 class Player(pygame.sprite.Sprite):
@@ -295,6 +292,7 @@ class Pong(PyGameWrapper):
             "cpu": 0.0}
 
         self.score_sum = 0.0
+        self.collisions = 1
         self.ball = Ball(
             self.ball_radius,
             self.ball_speed_ratio * self.height,
@@ -347,7 +345,12 @@ class Pong(PyGameWrapper):
 
         # doesnt make sense to have this, but include if needed.
         self.score_sum += self.rewards["tick"]
-        self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
+        self.collisions += self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
+        # Set how often the ball speeds up
+        if self.collisions > 0:
+            self.ball_speed_ratio += 0.5
+            self.ball.speed = self.ball_speed_ratio * self.height
+            self.collisions = 0
         is_terminal_state = False
 
         # logic
