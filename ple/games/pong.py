@@ -1,6 +1,5 @@
 import math
 import sys
-
 import pygame
 from pygame.constants import K_w, K_s
 from ple.games.utils.vec2d import vec2d
@@ -10,7 +9,6 @@ from ple.games.utils import percent_round_int
 from ple.games.base.pygamewrapper import PyGameWrapper
 
 class Ball(pygame.sprite.Sprite):
-
     def __init__(self, radius, speed, rng,
                  pos_init, SCREEN_WIDTH, SCREEN_HEIGHT):
 
@@ -43,7 +41,6 @@ class Ball(pygame.sprite.Sprite):
         self.rect.center = pos_init
 
     def line_intersection(self, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y):
-
         s1_x = p1_x - p0_x
         s1_y = p1_y - p0_y
         s2_x = p3_x - p2_x
@@ -55,7 +52,6 @@ class Ball(pygame.sprite.Sprite):
         return (s >= 0 and s <= 1 and t >= 0 and t <= 1)
 
     def update(self, agentPlayer, cpuPlayer, dt):
-
         self.pos.x += self.vel.x * dt
         self.pos.y += self.vel.y * dt
 
@@ -96,7 +92,6 @@ class Ball(pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
-
     def __init__(self, speed, rect_width, rect_height,
                  pos_init, SCREEN_WIDTH, SCREEN_HEIGHT):
 
@@ -119,8 +114,7 @@ class Player(pygame.sprite.Sprite):
             image,
             (255, 255, 255),
             (0, 0, rect_width, rect_height),
-            0
-        )
+            0)
 
         self.image = image
         self.rect = self.image.get_rect()
@@ -129,7 +123,6 @@ class Player(pygame.sprite.Sprite):
     def update(self, dy, dt):
         self.vel.y += dy * dt
         self.vel.y *= 0.9
-
         self.pos.y += self.vel.y
 
         if self.pos.y - self.rect_height / 2 <= 0:
@@ -168,8 +161,7 @@ class Player(pygame.sprite.Sprite):
 
 class Pong(PyGameWrapper):
     """
-    Loosely based on code from marti1125's `pong game`_.
-
+    Loosely based on code from marti1125's `pong game`_
     .. _pong game: https://github.com/marti1125/pong/
 
     Parameters
@@ -191,15 +183,11 @@ class Pong(PyGameWrapper):
 
     ball_speed_ratio: float (default: 0.75)
         Speed of ball (useful for curriculum learning)
-
     """
-
     def __init__(self, width=64, height=48, cpu_speed_ratio=0.6, players_speed_ratio = 0.4, ball_speed_ratio=0.75,  MAX_SCORE=11):
-
         actions = {
             "up": K_w,
-            "down": K_s
-        }
+            "down": K_s}
 
         PyGameWrapper.__init__(self, width, height, actions=actions)
 
@@ -220,8 +208,7 @@ class Pong(PyGameWrapper):
         self.score_sum = 0.0  # need to deal with 11 on either side winning
         self.score_counts = {
             "agent": 0.0,
-            "cpu": 0.0
-        }
+            "cpu": 0.0}
 
     def _handle_player_events(self):
         self.dy = 0
@@ -262,7 +249,6 @@ class Pong(PyGameWrapper):
 
         Returns
         -------
-
         dict
             * player y position.
             * players velocity.
@@ -273,7 +259,6 @@ class Pong(PyGameWrapper):
             * ball y velocity.
 
             See code for structure.
-
         """
         state = {
             "player_y": self.agentPlayer.pos.y,
@@ -282,8 +267,7 @@ class Pong(PyGameWrapper):
             "ball_x": self.ball.pos.x,
             "ball_y": self.ball.pos.y,
             "ball_velocity_x": self.ball.vel.x,
-            "ball_velocity_y": self.ball.vel.y
-        }
+            "ball_velocity_y": self.ball.vel.y}
 
         return state
 
@@ -298,8 +282,7 @@ class Pong(PyGameWrapper):
     def init(self):
         self.score_counts = {
             "agent": 0.0,
-            "cpu": 0.0
-        }
+            "cpu": 0.0}
 
         self.score_sum = 0.0
         self.ball = Ball(
@@ -308,8 +291,7 @@ class Pong(PyGameWrapper):
             self.rng,
             (self.width / 2, self.height / 2),
             self.width,
-            self.height
-        )
+            self.height)
 
         self.agentPlayer = Player(
             self.players_speed_ratio * self.height,
@@ -330,20 +312,16 @@ class Pong(PyGameWrapper):
         self.players_group = pygame.sprite.Group()
         self.players_group.add(self.agentPlayer)
         self.players_group.add(self.cpuPlayer)
-
         self.ball_group = pygame.sprite.Group()
         self.ball_group.add(self.ball)
-
 
     def reset(self):
         self.init()
         # after game over set random direction of ball otherwise it will always be the same
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
 
-
     def _reset_ball(self, direction):
         self.ball.pos.x = self.width / 2  # move it to the center
-
         # we go in the same direction that they lost in but at starting vel.
         self.ball.vel.x = self.ball.speed * direction
         self.ball.vel.y = (self.rng.random_sample() *
@@ -352,18 +330,14 @@ class Pong(PyGameWrapper):
     def step(self, dt):
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
-
         self.agentPlayer.speed = self.players_speed_ratio * self.height
         self.cpuPlayer.speed = self.cpu_speed_ratio * self.height
         self.ball.speed = self.ball_speed_ratio * self.height
-
         self._handle_player_events()
 
         # doesnt make sense to have this, but include if needed.
         self.score_sum += self.rewards["tick"]
-
         self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
-
         is_terminal_state = False
 
         # logic
