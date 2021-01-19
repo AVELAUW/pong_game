@@ -17,6 +17,7 @@ class Ball(pygame.sprite.Sprite):
         self.rng = rng
         self.radius = radius
         self.speed = speed
+        print(self.speed)
         self.pos = vec2d(pos_init)
         self.pos_before = vec2d(pos_init)
         self.vel = vec2d((speed, -1.0 * speed))
