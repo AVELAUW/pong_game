@@ -285,7 +285,10 @@ class Pong(PyGameWrapper):
         # pong used 11 as max score
         return (self.score_counts['agent'] == self.MAX_SCORE) or (
             self.score_counts['cpu'] == self.MAX_SCORE)
-
+    
+    def getBallSpeed(self):
+        return self.ball.getSpeed()
+        
     def init(self):
         self.score_counts = {
             "agent": 0.0,
@@ -335,7 +338,6 @@ class Pong(PyGameWrapper):
                            self.ball.speed) - self.ball.speed * 0.5
 
     def step(self, dt):
-        print(self.ball.getSpeed())
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
         self.agentPlayer.speed = self.players_speed_ratio * self.height
