@@ -390,9 +390,9 @@ class Pong(PyGameWrapper):
         
         font = pygame.font.Font(None, self.ball_radius*6)
         text = font.render(str(self.score_counts['agent']),1,(255,255,255))
-        self.screen.blit(text, (percent_round_int(self.width, 0.5)-(self.ball_radius*6),self.ball_radius) )
+        self.screen.blit(text, (percent_round_int(self.width, 0.5)-(self.ball_radius*7),self.ball_radius) )
         text = font.render(str(self.score_counts['cpu']),1,(255,255,255))
-        self.screen.blit(text, (percent_round_int(self.width, 0.5)+(percent_round_int(self.ball_radius,0.25)),self.ball_radius) )
+        self.screen.blit(text, (percent_round_int(self.width, 0.5)+(percent_round_int(self.ball_radius,1.25)),self.ball_radius) )
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
 
