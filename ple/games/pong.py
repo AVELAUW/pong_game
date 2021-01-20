@@ -333,7 +333,7 @@ class Pong(PyGameWrapper):
     def _reset_ball(self, direction):
         print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
         if self.score_counts['agent'] == self.MAX_SCORE:
-            print("Left(you) WON!")
+            print("\n Left(you) WON!")
         elif self.score_counts['cpu'] == self.MAX_SCORE:
             print("Right(cpu) WON!")
         self.ball.pos.x = self.width / 2  # move it to the center
