@@ -347,6 +347,7 @@ class Pong(PyGameWrapper):
     def step(self, dt):
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
+        self.screen.draw.line(self.screen, (255,255,255), [self.width/2,0], [self.width/2,self.height], 2) # Draw the net
         self.agentPlayer.speed = self.players_speed_ratio * self.height
         self.cpuPlayer.speed = self.cpu_speed_ratio * self.height
         self.ball.speed = self.ball_speed_ratio * self.height
