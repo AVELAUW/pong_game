@@ -356,7 +356,7 @@ class Pong(PyGameWrapper):
         self.collisions += self.ball.update(self.agentPlayer, self.cpuPlayer, dt)
         # Set how often the ball speeds up
         if self.collisions > 1:
-            self.ball_speed_ratio += 0.05
+            self.ball_speed_ratio += 0.5
             self.ball.speed = self.ball_speed_ratio * self.height
             self.collisions = 0
         is_terminal_state = False
