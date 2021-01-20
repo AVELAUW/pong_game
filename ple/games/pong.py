@@ -332,11 +332,11 @@ class Pong(PyGameWrapper):
         
 
     def _reset_ball(self, direction):
-        print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
-        if self.score_counts['agent'] == self.MAX_SCORE:
-            print("\n Left(you) WON!")
-        elif self.score_counts['cpu'] == self.MAX_SCORE:
-            print("\n Right(cpu) WON!")
+        #print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
+        #if self.score_counts['agent'] == self.MAX_SCORE:
+        #    print("\n Left(you) WON!")
+        #elif self.score_counts['cpu'] == self.MAX_SCORE:
+        #    print("\n Right(cpu) WON!")
         self.ball.pos.x = self.width / 2  # move it to the center
         # we go in the same direction that they lost in but at starting vel.
         self.ball_speed_ratio = self.ball_speed_ratio_start
@@ -347,11 +347,6 @@ class Pong(PyGameWrapper):
     def step(self, dt):
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
-        font = pygame.font.Font(None, self.ball_radius*2)
-        text = font.render(str(self.score_counts['agent']),1,(255,255,255))
-        self.screen.blit(text, ((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)) )
-        text = font.render(str(self.score_counts['cpu']),1,(255,255,255))
-        self.screen.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
         self.agentPlayer.speed = self.players_speed_ratio * self.height
         self.cpuPlayer.speed = self.cpu_speed_ratio * self.height
         self.ball.speed = self.ball_speed_ratio * self.height
@@ -392,6 +387,11 @@ class Pong(PyGameWrapper):
             self.agentPlayer.update(self.dy, dt)
             self.cpuPlayer.updateCpu(self.ball, dt)
         
+        font = pygame.font.Font(None, self.ball_radius*2)
+        text = font.render(str(self.score_counts['agent']),1,(255,255,255))
+        self.screen.blit(text, ((self.width*0.95/2)-(self.ball_radius*2),(self.height*0.95)-(self.ball_radius*2)) )
+        text = font.render(str(self.score_counts['cpu']),1,(255,255,255))
+        self.screen.blit(text, (self.width*1.05/2)(self.height*0.95)-(self.ball_radius*2))
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
 
