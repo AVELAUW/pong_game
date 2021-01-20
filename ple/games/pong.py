@@ -387,11 +387,11 @@ class Pong(PyGameWrapper):
             self.agentPlayer.update(self.dy, dt)
             self.cpuPlayer.updateCpu(self.ball, dt)
         
-        font = pygame.font.Font(None, self.ball_radius*2)
+        font = pygame.font.Font(None, self.ball_radius*4)
         text = font.render(str(self.score_counts['agent']),1,(255,255,255))
-        self.screen.blit(text, ((self.width*0.95/2)-(self.ball_radius*2),(self.height*0.95)-(self.ball_radius*2)) )
+        self.screen.blit(text, ((self.width*0.95/2)-(self.ball_radius*2),self.ball_radius*2) )
         text = font.render(str(self.score_counts['cpu']),1,(255,255,255))
-        self.screen.blit(text, (self.width*1.05/2,(self.height*0.95)-(self.ball_radius*2)) )
+        self.screen.blit(text, (self.width*1.05/2,self.ball_radius*4) )
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
 
