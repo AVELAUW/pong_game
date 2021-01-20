@@ -331,7 +331,7 @@ class Pong(PyGameWrapper):
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
 
     def _reset_ball(self, direction):
-        print("Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']))
+        print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
         if self.score_counts['agent'] == self.MAX_SCORE:
             print("Left(you) WON!")
         elif self.score_counts['cpu'] == self.MAX_SCORE:
