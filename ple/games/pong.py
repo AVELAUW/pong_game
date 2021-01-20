@@ -332,6 +332,10 @@ class Pong(PyGameWrapper):
 
     def _reset_ball(self, direction):
         print("Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']))
+        if self.score_counts['agent'] == self.MAX_SCORE:
+            print("Left(you) WON!")
+        elif self.score_counts['cpu'] == self.MAX_SCORE:
+            print("Right(cpu) WON!")
         self.ball.pos.x = self.width / 2  # move it to the center
         # we go in the same direction that they lost in but at starting vel.
         self.ball_speed_ratio = self.ball_speed_ratio_start
