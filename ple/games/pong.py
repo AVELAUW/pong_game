@@ -297,7 +297,7 @@ class Pong(PyGameWrapper):
         
         self.ball = Ball(
             self.ball_radius,
-            self.ball_speed_ratio * self.height,
+            self.ball_speed_ratio_start * self.height,
             self.rng,
             (self.width / 2, self.height / 2),
             self.width,
@@ -329,6 +329,7 @@ class Pong(PyGameWrapper):
         self.init()
         # after game over set random direction of ball otherwise it will always be the same
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
+        
 
     def _reset_ball(self, direction):
         print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
@@ -346,6 +347,11 @@ class Pong(PyGameWrapper):
     def step(self, dt):
         dt /= 1000.0
         self.screen.fill((0, 0, 0))
+        font = pygame.font.Font(None, self.ball_radius*2)
+        text = font.render(str(self.score_counts['agent']),1,(255,255,255))
+        self.screen.blit(text, ((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)) )
+        text = font.render(str(self.score_counts['cpu']),1,(255,255,255))
+        self.screen.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
         self.agentPlayer.speed = self.players_speed_ratio * self.height
         self.cpuPlayer.speed = self.cpu_speed_ratio * self.height
         self.ball.speed = self.ball_speed_ratio * self.height
@@ -386,11 +392,6 @@ class Pong(PyGameWrapper):
             self.agentPlayer.update(self.dy, dt)
             self.cpuPlayer.updateCpu(self.ball, dt)
         
-        #font = pygame.font.Font(None, self.ball_radius*2)
-        #text = font.render(str(self.score_counts['agent']),1,(0,0,0))
-        #self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),(self.width*0.9/2)-(self.ball_radius*2)) )
-        #text = font.render(str(self.score_counts['cpu']),1,(0,0,0))
-        #self.window.blit(text, ((self.height*0.9)-(self.ball_radius*2),self.width*1.1/2) )
         self.players_group.draw(self.screen)
         self.ball_group.draw(self.screen)
 
