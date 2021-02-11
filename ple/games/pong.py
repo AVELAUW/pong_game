@@ -209,6 +209,8 @@ class Pong(PyGameWrapper):
         self.paddle_height = percent_round_int(height, 0.15)
         self.paddle_dist_to_wall = percent_round_int(width, 0.0625)
         self.MAX_SCORE = MAX_SCORE
+        self.screen_width = width
+        self.screen_height = height
 
         self.dy = 0.0
         self.score_sum = 0.0  # need to deal with 10 or MAX_SCORE on either side winning
@@ -278,6 +280,27 @@ class Pong(PyGameWrapper):
 
     def getScore(self):
         return self.score_sum
+    
+    def getReward(self):
+        temp_reward = 0
+        # Neither player has scored
+        if self.ball.pos.x >= self.paddle_dist_to_wall:
+            temp_reward = (self.paddle_dist_to_wall-abs(self.agentPlayer.pos.y-self.ball.pos.y))/(self.ball.pos.x)
+        # Our agent has scored
+        elif self.ball.pos.x > (self.screen_width-self.paddle_dist_to_wall):
+            if self.score_counts["agent"] == self.MAX_SCORE-1:
+                # If you won give large reward
+                temp_reward += 5
+            else:
+                temp_reward += 1
+        # Our agent was scored on
+        if self.ball.pos.x < self.paddle_dist_to_wall:
+            if self.score_counts["cpu"] == self.MAX_SCORE-1:
+                # If you lost give large punishment
+                temp_reward -= 5
+            else:
+                tempreward -= 1
+        return tempreward
 
     def game_over(self):
         # pong used 11 as max score
