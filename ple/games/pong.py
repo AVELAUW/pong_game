@@ -352,7 +352,7 @@ class Pong(PyGameWrapper):
         self.init()
         # after game over set random direction of ball otherwise it will always be the same
         self._reset_ball(1 if self.rng.random_sample() > 0.5 else -1)
-        
+        return self.agentPlayer.pos.y, self.ball.pos.y, self.ball.pos.x
 
     def _reset_ball(self, direction):
         #print('\r',"Left(you): " + str(self.score_counts['agent']) + "   Right(cpu): " + str(self.score_counts['cpu']),end='')
