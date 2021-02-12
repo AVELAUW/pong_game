@@ -261,7 +261,7 @@ class PLE(object):
         self.last_action = []
         self.action = []
         self.previous_score = 0.0
-        self.game.reset()
+        return self.game.reset()
 
     def getScreenRGB(self):
         """
