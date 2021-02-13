@@ -285,22 +285,22 @@ class Pong(PyGameWrapper):
         temp_reward = 0
         # Neither player has scored
         if self.ball.pos.x >= self.paddle_dist_to_wall:
-            temp_reward = (self.paddle_dist_to_wall-abs(self.agentPlayer.pos.y-self.ball.pos.y))/(self.ball.pos.x)
-        # Our agent has scored
-        elif self.ball.pos.x > (self.screen_width-self.paddle_dist_to_wall):
-            if self.score_counts["agent"] == self.MAX_SCORE-1:
-                # If you won give large reward
-                temp_reward += 5
-            else:
-                temp_reward += 1
+            temp_reward += (self.paddle_dist_to_wall-abs(self.agentPlayer.pos.y-self.ball.pos.y))/(self.ball.pos.x)
+            # Our agent has scored
+            if self.ball.pos.x > (self.screen_width-self.paddle_dist_to_wall):
+                if self.score_counts["agent"] == self.MAX_SCORE-1:
+                    # If you won give large reward
+                    temp_reward += 5
+                else:
+                    temp_reward += 1
         # Our agent was scored on
-        if self.ball.pos.x < self.paddle_dist_to_wall:
+        else:
             if self.score_counts["cpu"] == self.MAX_SCORE-1:
                 # If you lost give large punishment
                 temp_reward -= 5
             else:
-                tempreward -= 1
-        return tempreward
+                temp_reward -= 1
+        return temp_reward
 
     def game_over(self):
         # pong used 11 as max score
