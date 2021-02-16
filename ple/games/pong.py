@@ -250,7 +250,6 @@ class Pong(PyGameWrapper):
                     if key == self.actions['down']:
                         self.dy = self.agentPlayer.speed
 
-
     def getGameState(self):
         """
         Gets a non-visual state representation of the game.
@@ -473,7 +472,25 @@ class HeuristicAgent:
         else:
           if (Q[states[0],self.decisions[states[0]]] < Q[states]):
             self.decisions[states[0]] = states[1]
-            
+  
+  def __get_action(player_strategy, Q, seen_combinations, state, actions, epsilon):
+    if player_strategy == "dumb":
+      return 0
+    else:
+      return epsilon_greedy(player_strategy, Q, seen_combinations, state, actions, epsilon)  
+
+  def __epsilon_greedy(player_strategy, Q, seen_combinations, state, possible_actions, epsilon):
+    not_tried_yet = []
+    for action in possible_actions:
+        if (state, action) not in seen_combinations:
+            not_tried_yet.append(action)
+    if not_tried_yet != []:
+        return random.choice(not_tried_yet)
+    if random.random() < epsilon:
+        return random.choice(possible_actions)
+    else:
+        return best_action(player_strategy, Q, state, possible_actions)
+    
   def __best_action(player_strategy, Q, state, possible_actions):
     best_action = None
     best_action_reward = -float('inf')
@@ -482,31 +499,10 @@ class HeuristicAgent:
     for action in possible_actions:
         if (state, action) not in Q:
             Q[state, action] = 0
-
         if Q[state, action] > best_action_reward:
             best_action_reward = Q[state, action]
             best_action = action
     return best_action
-
-  def __epsilon_greedy(player_strategy, Q, seen_combinations, state, possible_actions, epsilon):
-    not_tried_yet = []
-    for action in possible_actions:
-        if (state, action) not in seen_combinations:
-            not_tried_yet.append(action)
-
-    if not_tried_yet != []:
-        return random.choice(not_tried_yet)
-
-    if random.random() < epsilon:
-        return random.choice(possible_actions)
-    else:
-        return best_action(player_strategy, Q, state, possible_actions)
-
-  def __get_action(player_strategy, Q, seen_combinations, state, actions, epsilon):
-    if player_strategy == "dumb":
-      return 0
-    else:
-      return epsilon_greedy(player_strategy, Q, seen_combinations, state, actions, epsilon)  
 
 
 if __name__ == "__main__":
