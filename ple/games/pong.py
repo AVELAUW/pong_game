@@ -420,7 +420,7 @@ class Pong(PyGameWrapper):
         self.ball_group.draw(self.screen)
 
         
-class HeuristicAgent:
+class HeuristicAgent(object):
   """
       This is our agent. It decideds our actions!
   """
