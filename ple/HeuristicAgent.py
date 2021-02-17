@@ -1,5 +1,5 @@
 # Functions for Q-Learning training!
-class HeuristicAgent:
+class HeuristicAgent(object):
   """
       This is our agent. It decideds our actions!
   """
